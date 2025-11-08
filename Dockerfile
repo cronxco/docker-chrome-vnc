@@ -1,5 +1,5 @@
 # Credits: https://leimao.github.io/blog/Docker-Container-GUI-Display/
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DEBUG_PORT=9222
 ENV VNC_PORT=5900
@@ -24,11 +24,12 @@ RUN cd /tmp && \
 		wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
 		apt-get install -y ./google-chrome-stable_current_amd64.deb; \
 	else \
+		# For ARM64, use snap-free chromium from mozilla team ppa \
 		apt-get install -y software-properties-common && \
-		add-apt-repository universe && \
+		add-apt-repository ppa:xtradeb/apps -y && \
 		apt-get update && \
-		apt-get install -y --no-install-recommends chromium-browser && \
-		ln -sf /usr/bin/chromium-browser /usr/bin/google-chrome; \
+		apt-get install -y chromium && \
+		ln -sf /usr/bin/chromium /usr/bin/google-chrome; \
 	fi
 
 COPY entrypoint.sh entrypoint.sh
