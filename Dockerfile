@@ -24,8 +24,11 @@ RUN cd /tmp && \
 		wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
 		apt-get install -y ./google-chrome-stable_current_amd64.deb; \
 	else \
-		apt-get install -y chromium-browser && \
-		ln -s /usr/bin/chromium-browser /usr/bin/google-chrome; \
+		apt-get install -y software-properties-common && \
+		add-apt-repository universe && \
+		apt-get update && \
+		apt-get install -y --no-install-recommends chromium-browser && \
+		ln -sf /usr/bin/chromium-browser /usr/bin/google-chrome; \
 	fi
 
 COPY entrypoint.sh entrypoint.sh
